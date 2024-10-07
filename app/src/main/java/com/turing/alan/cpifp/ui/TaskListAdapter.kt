@@ -9,14 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.turing.alan.cpifp.data.Task
 import com.turing.alan.cpifp.databinding.TaskListItemBinding
 
-class TaskListAdapter(): ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TaskDiffCallback) {
+class TaskListAdapter(private val toItemDetail:((Task) -> Unit)): ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TaskDiffCallback) {
 
-    class TaskViewHolder(private val binding: TaskListItemBinding) :RecyclerView.ViewHolder(binding.root) {
+    inner class TaskViewHolder(private val binding: TaskListItemBinding) :RecyclerView.ViewHolder(binding.root) {
 
+        init {
+
+        }
         fun bind(task:Task) {
             binding.taskTitle.text = task.title
             binding.taskBody.text = task.body
             binding.taskCompleted.isChecked = task.completed
+            binding.root.setOnClickListener {
+                toItemDetail(task)
+            }
         }
 
     }
